@@ -30,6 +30,6 @@ c) `return 2 + bunnyEars(bunnies-1)` O(n)
 
 3) Repeat step 2 until you find the floor which is the break/non-break point
 
-This is an implementation of binary search so the complexity is O(n log(n))
+This is an implementation of binary search so the complexity is O(log(n))
 
 In reality, this is an egg dropping which means it's going to break on the bottom floor and time is O(1), don't drop eggs.
