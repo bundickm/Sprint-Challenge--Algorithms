@@ -16,12 +16,14 @@ class SortingRobot:
         """
         return self._position < len(self._list) - 1
 
+
     def can_move_left(self):
         """
         Returns True if the robot can move left or False if it's
         at the start of the list.
         """
         return self._position > 0
+
 
     def move_right(self):
         """
@@ -36,6 +38,7 @@ class SortingRobot:
         else:
             return False
 
+
     def move_left(self):
         """
         If the robot can move to the left, it moves to the left and
@@ -49,6 +52,7 @@ class SortingRobot:
         else:
             return False
 
+
     def swap_item(self):
         """
         The robot swaps its currently held item with the list item in front
@@ -58,6 +62,7 @@ class SortingRobot:
         self._time += 1
         # Swap the held item with the list item at the robot's position
         self._item, self._list[self._position] = self._list[self._position], self._item
+
 
     def compare_item(self):
         """
@@ -76,35 +81,79 @@ class SortingRobot:
         else:
             return 0
 
+
     def set_light_on(self):
         """
         Turn on the robot's light
         """
         self._light = "ON"
+
+
     def set_light_off(self):
         """
         Turn off the robot's light
         """
         self._light = "OFF"
+
+
     def light_is_on(self):
         """
         Returns True if the robot's light is on and False otherwise.
         """
         return self._light == "ON"
 
+
+    def light_is_off(self):
+        """
+        Returns True if the robot's light is off and False otherwise.
+        """
+        return self._light == "OFF"
+
+
     def sort(self):
         """
         Sort the robot's list.
+
+        First inclination was bubble sort for it's simplicity but
+        it says you can lose points for a slow solution. So, implemented
+        selection sort below. Still not crazy fast but you won't let us
+        use assignments so this is probably close to best for the 
+        given restrictions.
         """
-        # Fill this out
-        pass
+        # Grab the first element
+        self.swap_item()
+
+        while self.light_is_off(): # Not sorted
+            while self.move_right(): # Find an unsorted item
+                if self.compare_item() > 0:
+                    self.swap_item()
+
+            # Hit the end of the list without items means we are done
+            if self.can_move_right() is False and self.compare_item() is None:
+                self.swap_item()
+                self.set_light_on()
+                break
+            else: # Find the hole and drop the item there, then grab new item
+                 while self.move_left():
+                    if self.compare_item() is None:
+                        self.swap_item()
+                        self.move_right()
+                        self.swap_item()
+                        break
+
+        
 
 
 if __name__ == "__main__":
     # Test our your implementation from the command line
     # with `python robot_sort.py`
 
-    l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
+    l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5,
+         0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40,
+         95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72,
+         16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10,
+         29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 
+         70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
 
     robot = SortingRobot(l)
 
